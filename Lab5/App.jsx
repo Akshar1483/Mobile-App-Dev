@@ -9,7 +9,7 @@ function HomeScreen({ navigation }) {
   console.log('Rendering HomeScreen');
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>Welcome to the Home Screen</Text>
+      <Text style={styles.text}>This lab is wrong as everything is written inside app.jsx</Text>
       <Button title="Go to About" onPress={() => navigation.navigate('About')} />
     </View>
   );
@@ -19,7 +19,7 @@ function AboutScreen() {
   console.log('Rendering AboutScreen');
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>Welcome to the About Screen</Text>
+      <Text style={styles.text}>What the hell i told you lab is wrong fix it</Text>
     </View>
   );
 }
