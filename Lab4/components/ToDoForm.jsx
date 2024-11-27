@@ -4,26 +4,29 @@ import { View, TextInput, Button, StyleSheet } from 'react-native';
 function ToDoForm({ addTask }) {
   const [taskText, setTaskText] = useState(''); // Local state for input
 
+  // Add a new task to the tasks list
   const handleAddTask = () => {
     if (taskText.trim()) {
-      addTask(taskText); // Call the parent component's addTask function
-      setTaskText(''); // Clear the input field
+      addTask(taskText); 
+      setTaskText(''); 
     }
   };
 
+  // Form for adding a new task
   return (
     <View style={styles.form}>
       <TextInput
         style={styles.input}
         placeholder="Add a new task..."
         value={taskText}
-        onChangeText={(text) => setTaskText(text)} // Update local state
+        onChangeText={(text) => setTaskText(text)} 
       />
-      <Button title="Add Task" onPress={handleAddTask} /> {/* Trigger task addition */}
+      <Button title="Add Task" onPress={handleAddTask} />
     </View>
   );
 }
 
+// Styles for the ToDoForm component
 const styles = StyleSheet.create({
   form: {
     flexDirection: 'row',

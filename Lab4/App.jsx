@@ -22,14 +22,27 @@ function App() {
     }
   };
 
+  // Toggle the completion status of a task
+  const toggleTaskCompletion = (index) => {
+    setTasks(tasks.map((task, idx) =>
+      idx === index ? { ...task, completed: !task.completed } : task
+    ));
+  };
+
+  // Delete a task
+  const deleteTask = (index) => {
+    setTasks(tasks.filter((_, idx) => idx !== index));
+  };
+
   return (
     <View style={styles.container}>
-      <ToDoList tasks={tasks} /> {/* Pass tasks to ToDoList */}
-      <ToDoForm addTask={addTask} /> {/* Pass addTask function to ToDoForm */}
+      <ToDoList tasks={tasks} toggleTaskCompletion={toggleTaskCompletion} deleteTask={deleteTask} />
+      <ToDoForm addTask={addTask} />
     </View>
   );
 }
 
+// Styles for the App component
 const styles = StyleSheet.create({
   container: {
     flex: 1,
