@@ -1,13 +1,17 @@
 import React from 'react';
 import { View, Text, Button, StyleSheet } from 'react-native';
 import MainLayout from '../layouts/MainLayout';
+import ToDoList from '../components/ToDoList';
+import ToDoForm from '../components/ToDoForm';
+
 
 const HomeScreen = ({ navigation }) => {
   return (
     <MainLayout>
       <View style={styles.container}>
         <Text>Welcome to the Home Screen</Text>
-        <Button title="Go to About" onPress={() => navigation.navigate('About')} />
+        <Button title="Go to About" 
+        onPress={() => navigation.navigate('About')} />
       </View>
     </MainLayout>
   );
