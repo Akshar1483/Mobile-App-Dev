@@ -17,6 +17,7 @@ function ToDoList({ tasks }) {
   );
 }
 
+
 const styles = StyleSheet.create({
   task: {
     padding: 15,
@@ -28,9 +29,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-  },
-  completed: {
-    backgroundColor: '#d1ffd7', // Light green for completed tasks
   },
   taskText: {
     fontSize: 16,

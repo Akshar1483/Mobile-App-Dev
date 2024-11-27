@@ -1,85 +1,139 @@
 import React, { useState, useEffect } from "react";
+import { View, TextInput, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import tasksData from "../data/tasks.json";
 
 const TodoForm = () => {
-  const [tasks, setTasks] = useState([]); // State to store tasks
-  const [taskText, setTaskText] = useState(""); // State for the shared input box
-  const [jsonTasks, setJsonTasks] = useState([]); // State for JSON tasks (hidden initially)
+  const [tasks, setTasks] = useState([]);
+  const [taskText, setTaskText] = useState("");
+  const [jsonTasks, setJsonTasks] = useState([]);
 
-  // Load tasks from JSON file
   useEffect(() => {
     try {
-      setJsonTasks(tasksData.tasks); // Load tasks from JSON but do not show them initially
+      setJsonTasks(tasksData.tasks);
     } catch (error) {
       console.error("Error fetching tasks:", error);
     }
   }, []);
 
-  // Function to randomly select a task and show it in the input box
   const handleGenerateRandomTask = () => {
     if (jsonTasks.length === 0) {
       console.error("No tasks available in the JSON file.");
       return;
     }
     const randomTask = jsonTasks[Math.floor(Math.random() * jsonTasks.length)];
-    setTaskText(randomTask); // Update the shared input with the random task
+    setTaskText(randomTask);
   };
 
-  // Function to add a new task (from input or random task)
   const handleAddTask = () => {
     if (taskText.trim()) {
-      setTasks([...tasks, taskText]); // Add the task to the displayed list
-      setTaskText(""); // Clear the input field
+      setTasks([...tasks, { text: taskText, completed: false }]);
+      setTaskText("");
     } else {
       console.error("Task text is empty. Cannot add task.");
     }
   };
 
-  return (
-    <div className="container mx-auto mt-10">
-      <h1 className="text-2xl font-bold mb-4">Todo List with Random Task Generator</h1>
-      
-      {/* Shared Input Field for Adding New Task and Displaying Random Task */}
-      <div className="flex flex-col mb-6">
-        <input
-          type="text"
-          value={taskText}
-          onChange={(e) => setTaskText(e.target.value)} // Update input state
-          placeholder="Type a task or generate one..."
-          className="border p-2 mb-4 w-full"
-        />
-        <div className="flex space-x-4">
-          <button
-            onClick={handleAddTask}
-            className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-700"
-          >
-            Add Task
-          </button>
-          <button
-            onClick={handleGenerateRandomTask}
-            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700"
-          >
-            Generate Random Task
-          </button>
-        </div>
-      </div>
+  const toggleTaskCompletion = (index) => {
+    setTasks(tasks.map((task, idx) =>
+      idx === index ? { ...task, completed: !task.completed } : task
+    ));
+  };
 
-      {/* Display the List of Added Tasks */}
+  return (
+    <View style={styles.container}>
+      <Text style={styles.title}>Todo List with Random Task Generator</Text>
+      
+      <TextInput
+        style={styles.input}
+        value={taskText}
+        onChangeText={(text) => setTaskText(text)}
+        placeholder="Type a task or generate one..."
+      />
+      
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity style={styles.button} onPress={handleAddTask}>
+          <Text style={styles.buttonText}>Add Task</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={handleGenerateRandomTask}>
+          <Text style={styles.buttonText}>Generate Random Task</Text>
+        </TouchableOpacity>
+      </View>
+
       {tasks.length > 0 && (
-        <div className="mt-6">
-          <h2 className="text-xl font-semibold mb-2">Current Tasks</h2>
-          <ul className="list-disc pl-6">
-            {tasks.map((task, index) => (
-              <li key={index} className="mb-2">
-                {task}
-              </li>
-            ))}
-          </ul>
-        </div>
+        <View style={styles.taskContainer}>
+          <Text style={styles.subtitle}>Current Tasks</Text>
+          {tasks.map((task, index) => (
+            <TouchableOpacity key={index} onPress={() => toggleTaskCompletion(index)}>
+              <Text
+                style={[
+                  styles.taskText,
+                  task.completed ? styles.completedTaskText : null
+                ]}
+              >
+                {task.text}
+              </Text>
+            </TouchableOpacity>
+          ))}
+        </View>
       )}
-    </div>
+    </View>
   );
 };
 
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 20,
+    justifyContent: 'center',
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 10,
+  },
+  input: {
+    borderWidth: 1,
+    borderColor: '#ccc',
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    borderRadius: 6,
+    backgroundColor: '#fff',
+    fontSize: 16,
+    marginBottom: 10,
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  button: {
+    backgroundColor: '#007bff',
+    paddingVertical: 10,
+    paddingHorizontal: 15,
+    borderRadius: 6,
+    alignItems: 'center',
+    marginRight: 5,
+  },
+  buttonText: {
+    color: '#fff',
+    fontWeight: 'bold',
+    fontSize: 16,
+  },
+  taskContainer: {
+    marginTop: 20,
+  },
+  subtitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 10,
+  },
+  taskText: {
+    fontSize: 16,
+    marginBottom: 5,
+  },
+  completedTaskText: {
+    textDecorationLine: 'line-through',
+    color: '#888',
+  },
+});
+
 export default TodoForm;
-  
